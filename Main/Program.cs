@@ -1,29 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Main
 {
     class Program
     {
+        private static bool _ready;
+
         static void Main(string[] args)
         {
-            Console.WriteLine("New Circular List");
-            var circle = new CircularList<int>
+            Console.WriteLine("r u n");
+            _ready = false;
+            Task.Run(async () => await AsyncMethod());
+            //AsyncMethod().GetAwaiter().OnCompleted(()=>ready = true);
+            Console.WriteLine("c o n t i n u e");
+            while (_ready != true)
             {
-                0,
-                1,
-                2
-            };
-            Console.WriteLine(circle.Current);
-            Console.WriteLine(circle.MoveNext);
-            Console.WriteLine(circle.MovePrevious);
-            Console.WriteLine(circle.MoveNext);
-            Console.WriteLine(circle.MoveNext);
-            Console.WriteLine(circle.MoveNext);
-            Console.WriteLine(circle.NextIndex);
-            Console.WriteLine(circle.CurrentIndex);
-            Console.WriteLine(circle.MoveNext);
-            Console.WriteLine(circle.PreviousIndex);
+                
+            }
+            Console.WriteLine("m a i n - e n d");
+        }
+
+        private static async Task<int> AsyncMethod()
+        {
+            Console.WriteLine("s t a r t");
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var duration = 3000f;
+            
+            while (stopwatch.ElapsedMilliseconds < duration)
+            {
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
+                Task.Yield();
+            }
+            Console.WriteLine("f i n i s h");
+            return 1;
         }
         
         private class CircularList<T> : List<T>
